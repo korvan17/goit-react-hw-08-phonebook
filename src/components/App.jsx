@@ -5,7 +5,7 @@ import HomePage from './Pages/HomePage';
 import RegistrationPage from './Pages/RegistrationPage';
 import PhoneBookPage from './Pages/PhoneBookPage';
 
-export const App = () => {
+export default function App() {
   return (
     <>
       <Routes>

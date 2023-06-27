@@ -10,14 +10,21 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
+import { useRegistrationMutation } from './redux/contactSlice';
 
 const defaultTheme = createTheme();
-
 export default function Registration() {
+    const  [registration, result ]  = useRegistrationMutation();
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      name: data.get('name'),
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+    registration({
+      name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
     });
@@ -51,10 +58,10 @@ export default function Registration() {
               <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="name"
                   label="Your Name"
                   autoFocus
                 />

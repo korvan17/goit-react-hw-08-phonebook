@@ -10,10 +10,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
+import { useLoginMutation } from './redux/contactSlice';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const [login, result] = useLoginMutation();
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -21,6 +23,8 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    login({ email: data.get('email'), password: data.get('password') });
+    console.log('resulr - ', result)
   };
 
   return (
