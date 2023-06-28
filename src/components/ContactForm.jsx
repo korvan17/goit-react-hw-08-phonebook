@@ -6,17 +6,23 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useCreateContactMutation } from './redux/contactSlice';
 
 const defaultTheme = createTheme();
 
 export default function ContactForm() {
+  const [createContact] = useCreateContactMutation()
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       name: data.get('name'),
-      password: data.get('number'),
+      number: data.get('number'),
     });
+    createContact({
+      name: data.get('name'),
+      number: data.get('number'),
+    })
   };
 
   return (
@@ -54,10 +60,10 @@ export default function ContactForm() {
               margin="normal"
               required
               fullWidth
-              name="tel"
+              name="number"
               label="Number"
               type="tel"
-              id="tel"
+              id="number"
               autoComplete="tel"
             />
             <Button

@@ -14,7 +14,7 @@ import { useRegistrationMutation } from './redux/contactSlice';
 
 const defaultTheme = createTheme();
 export default function Registration() {
-    const  [registration, result ]  = useRegistrationMutation();
+    const  [registration ]  = useRegistrationMutation();
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
