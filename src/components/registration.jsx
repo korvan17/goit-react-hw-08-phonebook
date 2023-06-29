@@ -9,14 +9,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink } from 'react-router-dom';
 import { useRegistrationMutation } from './redux/contactSlice';
 import { useDispatch } from 'react-redux';
 import { setAuth } from './redux/authSlice';
 
 const defaultTheme = createTheme();
 export default function Registration() {
-  const [registration] = useRegistrationMutation();
+  const [registration, {isSuccess}] = useRegistrationMutation();
   const dispatch = useDispatch()
 
   async function handleSubmit(event) {
@@ -33,6 +33,8 @@ export default function Registration() {
   };
 
   return (
+    <>
+    {isSuccess && <Navigate to="/phonebook" />}
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -107,5 +109,6 @@ export default function Registration() {
         </Box>
       </Container>
     </ThemeProvider>
+    </>
   );
 }
