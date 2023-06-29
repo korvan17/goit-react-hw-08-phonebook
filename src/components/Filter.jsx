@@ -15,7 +15,6 @@ export default function Filter() {
   const dispatch = useDispatch()
 
   function handleSubmit(e){
-    console.log( e.target.value);
     dispatch(setFilter(e.target.value))
   };
 

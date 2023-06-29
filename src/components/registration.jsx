@@ -11,23 +11,25 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { useRegistrationMutation } from './redux/contactSlice';
+import { useDispatch } from 'react-redux';
+import { setAuth } from './redux/authSlice';
 
 const defaultTheme = createTheme();
 export default function Registration() {
-    const  [registration ]  = useRegistrationMutation();
-  const handleSubmit = event => {
+  const [registration] = useRegistrationMutation();
+  const dispatch = useDispatch()
+
+  async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try {
     registration({
       name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
     });
+    dispatch(setAuth(true))
+  } catch (error) {}
   };
 
   return (

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Navigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,23 +12,27 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { useLoginMutation } from './redux/contactSlice';
+import { useDispatch } from 'react-redux';
+import { setAuth } from './redux/authSlice';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [login, result] = useLoginMutation();
-  const handleSubmit = event => {
+  const [login, { isSuccess }] = useLoginMutation();
+  const dispatch = useDispatch()
+  
+  async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    login({ email: data.get('email'), password: data.get('password') });
-    console.log('resulr - ', result)
-  };
+    const user = new FormData(event.currentTarget);
+    try {
+      await login({ email: user.get('email'), password: user.get('password') });
+      dispatch(setAuth(true))
+    } catch (error) {}
+  }
 
   return (
+    <>
+    {isSuccess && <Navigate to="/phonebook" />}
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -91,5 +96,6 @@ export default function SignIn() {
         </Box>
       </Container>
     </ThemeProvider>
+    </>
   );
 }

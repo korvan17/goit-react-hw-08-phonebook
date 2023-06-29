@@ -4,6 +4,7 @@ import LoginPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import RegistrationPage from './Pages/RegistrationPage';
 import PhoneBookPage from './Pages/PhoneBookPage';
+import PrivateRoute from './PrivatRoute';
 
 export default function App() {
   return (
@@ -12,8 +13,15 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registraton" element={<RegistrationPage />} />
-        <Route path="/phonebook" element={<PhoneBookPage />} />
+        <Route
+          path="/phonebook"
+          element={
+            <PrivateRoute>
+              <PhoneBookPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
-};
+}

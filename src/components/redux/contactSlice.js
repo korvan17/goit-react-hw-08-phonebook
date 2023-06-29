@@ -1,19 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDliMDVkZGRlYTQ4MDAwMTQ4ZjU2MTQiLCJpYXQiOjE2ODc5NzQ2NTV9.DNj1ltcodTAwrEfpxNCn0qTdFA7MyUXDfGKg8po2lcI"
-
-
 export const phoneBookApi = createApi({
   reducerPath: 'phoneBookApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://connections-api.herokuapp.com', //'https://6491a4692f2c7ee6c2c8a0af.mockapi.io/api/v1',
+    baseUrl: 'https://connections-api.herokuapp.com',
     prepareHeaders: (headers, { getState }) => {
-      // const token = getState().auth.token;
+      console.log('getState() - ', getState());
+      const token = localStorage.getItem('token');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },
+    // cacheKey: 'authToken',
   }),
   tagTypes: ['Contact'],
   endpoints: builder => ({
@@ -31,6 +30,7 @@ export const phoneBookApi = createApi({
         },
       }),
       invalidatesTags: ['Contact'],
+      transformResponse: ({ token }) => localStorage.setItem('token', token),
     }),
     registration: builder.mutation({
       query: registration => ({
@@ -43,6 +43,7 @@ export const phoneBookApi = createApi({
         },
       }),
       invalidatesTags: ['Contact'],
+      transformResponse: ({ token }) => localStorage.setItem('token', token),
     }),
     createContact: builder.mutation({
       query: newContact => ({
@@ -62,14 +63,22 @@ export const phoneBookApi = createApi({
       }),
       invalidatesTags: ['Contact'],
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: '/users/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['Contact'],
+      transformResponse: () => localStorage.setItem('token', ''),
+    }),
   }),
 });
 
 export const {
+  useLogoutMutation,
   useLoginMutation,
   useRegistrationMutation,
   useGetContactsQuery,
   useDeleteContactMutation,
   useCreateContactMutation,
 } = phoneBookApi;
-
