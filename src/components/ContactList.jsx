@@ -8,10 +8,14 @@ import {
 } from '@mui/material';
 import { useGetContactsQuery } from './redux/contactSlice';
 import Contact from './Contact';
+import { useSelector } from 'react-redux';
+import { getStatusFilter } from './redux/filterSlice';
 const defaultTheme = createTheme();
 
 export default function ContactList() {
   const { data } = useGetContactsQuery();
+  const statusFilter = useSelector(getStatusFilter);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -27,7 +31,14 @@ export default function ContactList() {
             List of contacts
           </Typography>
           <List>
-            {data && data.map(contact => <Contact name={contact.name} key={contact.id}/>)}
+            {data &&
+              data
+                .filter(contact =>
+                  contact.name
+                    .toLowerCase()
+                    .includes(statusFilter.toLowerCase())
+                )
+                .map(contact => <Contact Contact={contact} key={contact.id} />)}
           </List>
         </Box>
       </Container>

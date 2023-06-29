@@ -5,16 +5,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { setFilter } from './redux/filterSlice';
 
 const defaultTheme = createTheme();
 
 export default function Filter() {
-  const handleSubmit = event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-    });
+
+  const dispatch = useDispatch()
+
+  function handleSubmit(e){
+    console.log( e.target.value);
+    dispatch(setFilter(e.target.value))
   };
 
   return (
@@ -34,8 +36,7 @@ export default function Filter() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
-            noValidate
+            onChange={handleSubmit}
             sx={{ mt: 3 }}
           >
             <TextField

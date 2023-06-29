@@ -5,10 +5,11 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
+import { useDeleteContactMutation } from './redux/contactSlice';
 
 
 function generate(element) {
-    return [0, 1, 2].map((value) =>
+    return [0].map((value) =>
       React.cloneElement(element, {
         key: value,
       }),
@@ -16,24 +17,25 @@ function generate(element) {
   }
 
 
-export default function Contact({ name }) {
+export default function Contact({ Contact }) {
 
-    function onDelete(e) {
-        console.log('push delete - ', e)
-    }
+  const [delContact] = useDeleteContactMutation();
+
+    
 
   return (
     <>
       {generate(
         <ListItem
           secondaryAction={
-            <IconButton edge="end" aria-label="delete" onClick={onDelete}>
+            <IconButton edge="end" aria-label="delete" onClick={()=> delContact(Contact.id)}>
               <DeleteIcon />
             </IconButton>
           }
         >
           <ListItemText
-            primary={name}
+            primary={Contact.name}
+            secondary={Contact.number}
           />
         </ListItem>
       )}
