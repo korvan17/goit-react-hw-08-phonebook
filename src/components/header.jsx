@@ -15,6 +15,7 @@ const styleLink = { color: 'white', margin: '30px', textDecoration: 'none' };
 export default function ButtonAppBar() {
   const navigate = useNavigate();
   const [logoutPhonebook] = useLogoutMutation();
+  
   const isLoggedIn = useSelector(getStatusAuth);
   const dispatch = useDispatch();
 
@@ -23,7 +24,6 @@ export default function ButtonAppBar() {
     navigate('/login');
     dispatch(setAuth(false))
   }
-  // const isLoggedIn = getStatusAuth()
 
   return (
     <Box sx={{ flexGrow: 1 }}>

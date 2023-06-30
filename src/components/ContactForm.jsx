@@ -15,10 +15,6 @@ export default function ContactForm() {
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      number: data.get('number'),
-    });
     createContact({
       name: data.get('name'),
       number: data.get('number'),

@@ -4,25 +4,31 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { phoneBookApi } from './contactSlice';
 import { filtersReducer } from './filterSlice';
 import { authReducer } from './authSlice';
+import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
 
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, authReducer);
 
 
 export const store = configureStore({
   reducer: {
     filters: filtersReducer,
-    auth: authReducer,
+    auth: persistedReducer,
     [phoneBookApi.reducerPath]: phoneBookApi.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(phoneBookApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(phoneBookApi.middleware),
 });
 
-// api.initCache().then(() => {
-//   const savedToken = api.getState().queries.authToken?.data;
-
-//   if (savedToken) {
-//     store.dispatch(setAuthToken(savedToken));
-//   }
-// });
-
 setupListeners(store.dispatch)
+
+export const persistor = persistStore(store);

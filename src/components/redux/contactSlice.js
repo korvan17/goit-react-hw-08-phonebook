@@ -11,7 +11,6 @@ export const phoneBookApi = createApi({
       }
       return headers;
     },
-    // cacheKey: 'authToken',
   }),
   tagTypes: ['Contact'],
   endpoints: builder => ({
